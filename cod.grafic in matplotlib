@@ -1,0 +1,44 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Функции для расчета аномалий
+def true_anomaly(t, T, e):
+    return 2 * np.pi * t / T
+
+def eccentric_anomaly(M, e, tolerance=1e-8):
+    E = M
+    for _ in range(1000):
+        next_E = M + e * np.sin(E)
+        if abs(next_E - E) < tolerance:
+            return next_E
+        E = next_E
+    return -1
+
+def mean_anomaly(t, T, e, M_0):
+    M = 2 * np.pi * t / T + M_0
+    return M
+
+# Время
+T = 1  # Сидерический период обращения
+t_values = np.linspace(0, T, 1000)
+
+# Начальные данные для пятого варианта
+M_0 = 10.7753  # Начальные условия средней аномалии
+e = 0.0934  # Начальные условия эксцентриситета
+
+# Расчет аномалий для каждого момента времени
+true_anomaly_values = true_anomaly(t_values, T, e)
+eccentric_anomaly_values = [eccentric_anomaly(M, e) for M in mean_anomaly(t_values, T, e, M_0)]
+mean_anomaly_values = mean_anomaly(t_values, T, e, M_0)
+
+# Построение графика
+plt.figure(figsize=(10, 6))
+plt.plot(t_values, true_anomaly_values, label='Истинная аномалия')
+plt.plot(t_values, eccentric_anomaly_values, label='Эксцентрическая аномалия')
+plt.plot(t_values, mean_anomaly_values, label='Средняя аномалия')
+plt.xlabel('Время')
+plt.ylabel('Аномалии')
+plt.title('Зависимость трех аномалий от времени')
+plt.legend()
+plt.grid(True)
+plt.show()
