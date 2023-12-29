@@ -84,7 +84,7 @@ double newtonMethod(double M, double e, double initial_guess, double tolerance, 
 }
 int main() {
     double M = 0.642*(10^24); // Значение средней аномалии
-    double e = 0.8; // Эксцентриситет орбиты
+    double e = 0.59; // Эксцентриситет орбиты
 
     // Пример использования методов для вычисления эксцентрической аномалии
     double initial_guess = M; // Начальное предположение для всех методов
